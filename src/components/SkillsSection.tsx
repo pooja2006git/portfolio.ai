@@ -91,36 +91,32 @@ const SkillsSection: React.FC = () => {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            const skillId = entry.target.getAttribute('data-skill-id');
-            if (skillId) {
-              setTimeout(() => {
-                setVisibleSkills(prev => new Set([...prev, skillId]));
-              }, 200);
-            }
+            // Animate all skills after a short delay
+            setTimeout(() => {
+              setVisibleSkills(new Set(['all-visible']));
+            }, 300);
           }
         });
       },
       { threshold: 0.3 }
     );
 
-    const skillElements = sectionRef.current?.querySelectorAll('[data-skill-id]');
-    skillElements?.forEach(el => observer.observe(el));
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
 
     return () => observer.disconnect();
   }, []);
 
-  const SkillItem: React.FC<{ skill: Skill; categoryIndex: number; skillIndex: number }> = ({ 
+  const SkillItem: React.FC<{ skill: Skill; skillIndex: number }> = ({ 
     skill, 
-    categoryIndex, 
     skillIndex 
   }) => {
-    const skillId = `${categoryIndex}-${skillIndex}`;
-    const isVisible = visibleSkills.has(skillId);
+    const skillsVisible = visibleSkills.has('all-visible');
 
     return (
       <li
-        className={`flex items-center transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-1'}`}
-        data-skill-id={skillId}
+        className={`flex items-center transition-all duration-700 ${skillsVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-1'}`}
         style={{ transitionDelay: `${skillIndex * 100}ms` }}
       >
         <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full mr-3 flex-shrink-0"></span>
@@ -188,7 +184,6 @@ const SkillsSection: React.FC = () => {
                   <SkillItem
                     key={skill.name}
                     skill={skill}
-                    categoryIndex={categoryIndex}
                     skillIndex={skillIndex}
                   />
                 ))}

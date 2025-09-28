@@ -181,7 +181,7 @@ const ResumeSection: React.FC = () => {
           {/* View Resume Link */}
           <div className="pt-4">
             <a
-              href="/resume.png"
+              href="/newresume.png"
               target="_blank"
               rel="noopener noreferrer"
               className="group relative px-8 py-4 bg-gradient-to-r from-cyan-500 to-cyan-600 
