@@ -24,15 +24,15 @@ const SkillsSection: React.FC = () => {
   const [visibleSkills, setVisibleSkills] = useState<Set<string>>(new Set());
   const sectionRef = useRef<HTMLDivElement>(null);
 
-  // Updated skill categories without percentages/bars
+  // Updated skill categories with placeholder skills
   const skillCategories: SkillCategory[] = [
     {
       title: 'Programming Languages',
       icon: <Code size={24} />,
       color: 'from-cyan-400 to-blue-500',
       skills: [
-        { name: 'Java' },
-        { name: 'Python' }
+        { name: 'Python' },
+        { name: 'Java' }
       ]
     },
     {
@@ -41,6 +41,9 @@ const SkillsSection: React.FC = () => {
       color: 'from-violet-400 to-purple-500',
       skills: [
         { name: 'React' },
+        { name: 'Next.js' },
+        { name: 'HTML' },
+        { name: 'CSS' },
         { name: 'Tailwind CSS' }
       ]
     },
@@ -49,7 +52,8 @@ const SkillsSection: React.FC = () => {
       icon: <Database size={24} />,
       color: 'from-teal-400 to-green-500',
       skills: [
-        { name: 'Django' }
+        { name: 'MongoDB' },
+        { name: 'SQL' }
       ]
     },
     {
@@ -57,11 +61,9 @@ const SkillsSection: React.FC = () => {
       icon: <Wrench size={24} />,
       color: 'from-orange-400 to-red-500',
       skills: [
-        { name: 'Git & GitHub' },
+        { name: 'Git' },
         { name: 'VS Code' },
-        { name: 'Postman' },
-        { name: 'Cursor' },
-        { name: 'Bolt' }
+        { name: 'Postman' }
       ]
     },
     {
@@ -70,7 +72,7 @@ const SkillsSection: React.FC = () => {
       color: 'from-indigo-400 to-blue-600',
       skills: [
         { name: 'AWS' },
-        { name: 'Netlify' }
+        { name: 'Firebase' }
       ]
     },
     {
@@ -78,9 +80,8 @@ const SkillsSection: React.FC = () => {
       icon: <Palette size={24} />,
       color: 'from-pink-400 to-rose-500',
       skills: [
-        { name: 'Tailwind CSS' },
-        { name: 'Responsive Design' },
-        { name: 'UI/UX Principles' }
+        { name: 'Bolt' },
+        { name: 'Canva' }
       ]
     }
   ];
@@ -108,7 +109,7 @@ const SkillsSection: React.FC = () => {
     return () => observer.disconnect();
   }, []);
 
-  const SkillBar: React.FC<{ skill: Skill; categoryIndex: number; skillIndex: number }> = ({ 
+  const SkillItem: React.FC<{ skill: Skill; categoryIndex: number; skillIndex: number }> = ({ 
     skill, 
     categoryIndex, 
     skillIndex 
@@ -117,13 +118,14 @@ const SkillsSection: React.FC = () => {
     const isVisible = visibleSkills.has(skillId);
 
     return (
-      <span
-        className={`px-3 py-1 bg-slate-700/40 rounded-full text-slate-200 text-sm border border-slate-600/40 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-1'}`}
+      <li
+        className={`flex items-center transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-1'}`}
         data-skill-id={skillId}
-        style={{ transitionDelay: `${skillIndex * 80}ms` }}
+        style={{ transitionDelay: `${skillIndex * 100}ms` }}
       >
-        {skill.name}
-      </span>
+        <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full mr-3 flex-shrink-0"></span>
+        <span className="text-[#C6D2DA] text-sm font-medium">{skill.name}</span>
+      </li>
     );
   };
 
@@ -181,16 +183,16 @@ const SkillsSection: React.FC = () => {
               </div>
 
               {/* Skills List */}
-              <div className="flex flex-wrap gap-2">
+              <ul className="space-y-3">
                 {category.skills.map((skill, skillIndex) => (
-                  <SkillBar
+                  <SkillItem
                     key={skill.name}
                     skill={skill}
                     categoryIndex={categoryIndex}
                     skillIndex={skillIndex}
                   />
                 ))}
-              </div>
+              </ul>
 
               {/* Subtle Glow Effect */}
               <div className={`absolute inset-0 bg-gradient-to-r ${category.color} opacity-0 
